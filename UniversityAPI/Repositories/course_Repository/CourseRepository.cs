@@ -87,7 +87,7 @@ namespace UniversityAPI.Repositories.course_Repository
                            .FirstOrDefaultAsync(cs => cs.StudentId == studentId && cs.CourseId == courseId);
             if (exists != null)
             {
-               _context.Enrollments.Remove(exists);
+                _context.Enrollments.Remove(exists);
                 _context.SaveChangesAsync();
             }
         }

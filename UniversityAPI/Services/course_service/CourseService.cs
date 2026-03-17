@@ -74,28 +74,19 @@ namespace UniversityAPI.Services.course_service
         {
             var teacher = await _teacherRepo.GetByIdAsync(teacherId);
             var course = await _repo.GetByIdAsync(courseId);
-            if (course != null && teacher != null)
-            {
                 await _repo.RemoveTeacherAsync(courseId,teacherId);
-            }
         }
         public async Task EnrollStudentToCourse(int courseId, int studentId)
         {
             var student = await _studentRepo.GetByIdAsync(studentId);
             var course = await _repo.GetByIdAsync(courseId);
-            if (course != null && student != null)
-            {
                 await _repo.EnrollStudentAsync(studentId, courseId);
-            }
         }
         public async Task RemoveStudentFromCourse(int courseId, int studentId)
         {
             var student = await _studentRepo.GetByIdAsync(studentId);
             var course = await _repo.GetByIdAsync(courseId);
-            if (course != null && student != null)
-            {
                 await _repo.RemoveStudentAsync(studentId,courseId);
-            }
         }
     }
 }
