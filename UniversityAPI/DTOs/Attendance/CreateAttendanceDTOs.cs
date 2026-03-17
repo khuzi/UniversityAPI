@@ -11,5 +11,7 @@ namespace UniversityAPI.DTOs.Attendance
 
         [Required]
         public int TeacherId { get; set; }
+
+        public int DaysPresent { get; set; }
     }
 }

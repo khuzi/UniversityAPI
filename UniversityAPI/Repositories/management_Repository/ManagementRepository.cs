@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversityAPI.Data;
 
-namespace UniversityAPI.Repositories
+namespace UniversityAPI.Repositories.management_Repository
 {
-    public class ManagementRepository<T>  where T : class
+    public class ManagementRepository<T> : IManagementRepository<T> where T : class
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbset;
@@ -25,8 +25,9 @@ namespace UniversityAPI.Repositories
             await _dbset.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task SaveChangesAsync()
+        public async Task UpdateAsync(T entity)
         {
+            _dbset.Update(entity);
             await _context.SaveChangesAsync();
         }
         public async Task DeleteAsync(int id)

@@ -2,9 +2,9 @@
 using UniversityAPI.Data;
 using UniversityAPI.Models;
 
-namespace UniversityAPI.Repositories
+namespace UniversityAPI.Repositories.course_Repository
 {
-    public class CourseRepository
+    public class CourseRepository : ICourseRepository
     {
         private readonly AppDbContext _context;
         public CourseRepository(AppDbContext context)
@@ -62,8 +62,50 @@ namespace UniversityAPI.Repositories
 
             if (exists != null)
             {
-                _context.CourseTeachers.Remove(courseId, teacherId);
+                _context.CourseTeachers.Remove(exists);
+                await _context.SaveChangesAsync();
             }
+        }
+        public async Task EnrollStudentAsync(int studentId, int courseId)
+        {
+            var exists = await _context.Enrollments
+                .AnyAsync(cs => cs.StudentId == studentId && cs.CourseId == courseId);
+
+            if (!exists)
+            {
+                await _context.Enrollments.AddAsync(new Enrollment
+                {
+                    CourseId = courseId,
+                    StudentId = studentId
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task RemoveStudentAsync(int studentId, int courseId)
+        {
+            var exists = await _context.Enrollments
+                           .FirstOrDefaultAsync(cs => cs.StudentId == studentId && cs.CourseId == courseId);
+            if (exists != null)
+            {
+               _context.Enrollments.Remove(exists);
+                _context.SaveChangesAsync();
+            }
+        }
+        public async Task UpdateCourseAsync(Course course)
+        {
+            _context.Courses.Update(course);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<bool> IsTeacherAssignedToCourseAsync(int courseId, int teacherId)
+        {
+            return await _context.CourseTeachers
+                .AnyAsync(ct => ct.CourseId == courseId && ct.TeacherId == teacherId);
+        }
+
+        public async Task<bool> IsStudentEnrollToCourseAsync(int courseId, int studentId)
+        {
+            return await _context.Enrollments
+                .AnyAsync(cs => cs.CourseId == courseId && cs.StudentId == studentId);
         }
     }
 }

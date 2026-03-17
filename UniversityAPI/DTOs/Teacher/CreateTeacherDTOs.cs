@@ -2,7 +2,7 @@
 
 namespace UniversityAPI.DTOs.Teacher
 {
-    public class CreateStudentDTOs
+    public class CreateTeacherDTOs
     {
         [Required]
         [StringLength(100, MinimumLength = 2)]
