@@ -88,7 +88,7 @@ namespace UniversityAPI.Repositories.course_Repository
             if (exists != null)
             {
                 _context.Enrollments.Remove(exists);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
         }
         public async Task UpdateCourseAsync(Course course)

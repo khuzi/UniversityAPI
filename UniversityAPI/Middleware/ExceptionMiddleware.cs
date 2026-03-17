@@ -26,7 +26,7 @@ namespace UniversityAPI.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unhnadled Exception occurred.");
+                _logger.LogError(ex, "Unhnadled exception occurred.");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
