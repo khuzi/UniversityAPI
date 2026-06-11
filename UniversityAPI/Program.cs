@@ -13,17 +13,22 @@ using UniversityAPI.Services.teacherservice;
 using UniversityAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllers();
+
+// ? ADD THESE 2 LINES FOR SWAGGER
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // DB CONTEXT=>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
- 
+
 //Repository=>>>>
 builder.Services.AddScoped
-    (typeof(IManagementRepository<>),typeof(ManagementRepository<>));
-builder.Services.AddScoped<ICourseRepository,CourseRepository>();
-builder.Services.AddScoped<IMarkRepository,MarkRepository>();
+    (typeof(IManagementRepository<>), typeof(ManagementRepository<>));
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IMarkRepository, MarkRepository>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
 //SERVICES=>
@@ -36,13 +41,13 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var app = builder.Build();
 
+// ? ADD THESE 2 LINES FOR SWAGGER UI
+app.UseSwagger();
+app.UseSwaggerUI();
+
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
